@@ -1,9 +1,12 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { NestFactory } from '@nestjs/core'
+import { AppModule } from './app.module'
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger'
+import { ValidationPipe } from '@nestjs/common'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule)
+
+  app.useGlobalPipes(new ValidationPipe())
 
   const config = new DocumentBuilder().setTitle('Nest Api').setDescription('The Nest API description')
     .setVersion('1.0')
@@ -13,6 +16,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('/', app, document)
   
-  await app.listen(3000);
+  await app.listen(3000)
 }
-bootstrap();
+bootstrap()

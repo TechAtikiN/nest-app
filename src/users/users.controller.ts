@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
@@ -18,8 +18,9 @@ export class UsersController {
 
   @ApiNotFoundResponse()
   @Get(':id')
-  getUser(@Param('id') id: string): User {
-    const user = this.usersService.findById(Number(id))
+  getUser(@Param('id', ParseIntPipe) id: number): User {
+    
+    const user = this.usersService.findById(id)
     
     if (!user) {
       throw new Error('User not found')
